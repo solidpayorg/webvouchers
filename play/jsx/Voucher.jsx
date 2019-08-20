@@ -113,15 +113,11 @@ class App extends React.Component {
       <div>
         <NavbarSolidLogin
           className='is-link'
-          title='Web Voucher'
+          title='Web Vouchers'
           sourceCode='https://github.com/solidpayorg/webvouchers/blob/gh-pages/play/voucher.html'
         />
         <section className='section'>
-          <h2>Web Vouchers</h2>
-          <hr />
-          {this.state.message}
-          <hr />
-          Voucher URI (optional) :
+          Voucher URI :
           <br />
           <br />
           <input
@@ -149,50 +145,6 @@ class App extends React.Component {
             value={this.state.request}
             onChange={this.changeRequest}
           />
-          <hr />
-          Destination URI (optional) :
-          <br />
-          <br />
-          <input
-            style={{ width: '95%' }}
-            value={this.state.destination}
-            onChange={this.changeDestination}
-          />
-          <hr />
-          Amount (optional) :
-          <br />
-          <br />
-          <input
-            style={{ width: '95%' }}
-            value={this.state.amount}
-            onChange={this.changeAmount}
-          />
-          <hr />
-          Command : <br />
-          fetch("{this.state.uri}",{' '}
-          {"{ mode : 'no-cors', headers : { 'Content-Type', 'application/x-www-form-urlencoded' }, body : 'request=" +
-            this.state.request +
-            '&voucher=' +
-            this.state.voucher +
-            '&amount=' +
-            this.state.amount +
-            '&destination=' +
-            this.state.destination +
-            "', 'method' : 'POST' } "}{' '}
-          )
-          <hr />
-          Curl : <br />
-          curl{' '}
-          {"-X POST --cert $CERT --key $CERT -H  'Content-Type : application/x-www-form-urlencoded' --data 'request=" +
-            this.state.request +
-            '&voucher=' +
-            this.state.voucher +
-            '&amount=' +
-            this.state.amount +
-            '&destination=' +
-            this.state.destination +
-            "'  "}{' '}
-          '{this.state.uri}'
           <hr />
           <div className='buttons'>
             <button
