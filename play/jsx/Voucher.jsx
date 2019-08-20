@@ -13,7 +13,7 @@ class App extends React.Component {
         new URLSearchParams(document.location.search).get('request') || '',
       uri:
         new URLSearchParams(document.location.search).get('uri') ||
-        'https://localhost:8888/',
+        'https://localhost:5010/',
       destination:
         new URLSearchParams(document.location.search).get('destination') || '',
       voucher:
@@ -117,7 +117,7 @@ class App extends React.Component {
           sourceCode='https://github.com/solidpayorg/webvouchers/blob/gh-pages/play/voucher.html'
         />
         <section className='section'>
-          Voucher URI :
+          Voucher Id :
           <br />
           <br />
           <input
@@ -125,17 +125,6 @@ class App extends React.Component {
             value={this.state.voucher}
             onChange={this.changeVoucher}
           />
-          <hr />
-          Server URI : <br />
-          <input
-            style={{ width: '95%' }}
-            onChange={this.changeUri}
-            value={this.state.uri}
-          />
-          <a href={this.state.uri} target='_blank'>
-            {' '}
-            <img height='10' width='10' src='./image/External.svg' />
-          </a>{' '}
           <hr />
           Payment Request :
           <br />
