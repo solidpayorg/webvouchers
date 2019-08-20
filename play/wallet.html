@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Wallet App</title>
+  <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+  <script src="https://solid.github.io/releases/rdflib.js/rdflib-0.12.2.min.js"></script>
+
+  <!-- Don't use this in production: -->
+  <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="text/babel" src="../src/components/bulma/Navbar.jsx"></script>
+  <script type="text/babel" src="../src/components/Addressbar.jsx"></script>
+  <script src="https://solid.github.io/releases/rdflib.js/rdflib-0.12.2.min.js"></script>
+  <script src="https://solid.github.io/solid-auth-client/dist/solid-auth-client.bundle.js"></script>
+
+
+  <script type="text/babel">
+const defaultUri = 'https://melvin.solid.live/public/appdata/wallet/testwallet.ttl#this'
+const store = $rdf.graph()
+const fetcher = new $rdf.Fetcher(store)
+const updater = new $rdf.UpdateManager(store)
+
+var subject = getQueryStringParam('uri') || defaultUri
+
+function getQueryStringParam (param) {
+  var url = window.location.toString()
+  url.match(/\?(.+)$/)
+  var params = RegExp.$1
+  params = params.split('&')
+  var queryStringList = {}
+  for (var i = 0; i < params.length; i++) {
+    var tmp = params[i].split('=')
+    queryStringList[tmp[0]] = unescape(tmp[1])
+  }
+  return queryStringList[param]
+}
+
+class Wallet extends React.Component  {
+  constructor(props) {
+    super(props)
+  }
+
+  componentDidMount() {
+    console.log('loading', subject)
+    fetcher.load(store.sym(subject)).then(response => {
+        this.triples = store.statementsMatching(store.sym(subject))
+        console.log('triples', this.triples)
+
+        for (var i=0; i < this.triples.length; i++) {
+            var triple = this.triples[i]
+            console.log('object', triple.object);
+        }
+        this.setState({triples: this.triples})
+    }, err => {
+        console.log(err);
+    });
+ }
+
+
+  render () {
+    var description = store.any(store.sym(subject), store.sym('http://purl.org/dc/terms/description'))
+
+    if (description && description.value) {
+      description = description.value
+    }
+    console.log('description', description)
+
+    var ledger = store.any(store.sym(subject), store.sym('https://w3id.org/cc#ledger'))
+
+    if (ledger && ledger.value) {
+      ledger = ledger.value
+    }
+    console.log('ledger', ledger)
+
+    var creditChain = store.any(store.sym(subject), store.sym('https://w3id.org/cc#creditChain'))
+
+    if (creditChain && creditChain.value) {
+      creditChain = creditChain.value
+    }
+    console.log('creditChain', creditChain)
+
+    var inbox = store.any(store.sym(subject), store.sym('https://w3id.org/cc#inbox'))
+
+    if (inbox && inbox.value) {
+      inbox = inbox.value
+    }
+    console.log('inbox', inbox)
+
+    var currency = store.any(store.sym(subject), store.sym('https://w3id.org/cc#currency'))
+
+    if (currency && currency.value) {
+      currency = currency.value
+    }
+    console.log('currency', currency)
+
+    var HDPubKey = store.any(store.sym(subject), store.sym('https://w3id.org/cc#HDPubKey'))
+
+    if (HDPubKey && HDPubKey.value) {
+      HDPubKey = HDPubKey.value.substring(40)
+    }
+    console.log('HDPubKey', HDPubKey)
+
+
+    return (<div>
+      <Label>Wallet</Label> <a href={subject}>{subject}</a>
+      <br/>
+      <Label>Description</Label> {description}
+      <br/>
+      <Label>Ledger</Label> <a href={ledger}>{ledger}</a>
+      <br/>
+      <Label>Credit Chain</Label> <a href={creditChain}>{creditChain}</a>
+      <br/>
+      <Label>Inbox</Label> <a href={inbox}>{inbox}</a>
+      <br/>
+      <Label>Currency</Label> <a href={currency}>{currency}</a>
+      <br/>
+      <Label>HDPubKey</Label> {HDPubKey}
+      </div>)
+  }
+}
+
+function Label(props) {
+  return <span style={{width: '100px', display: 'inline-block'}}>{props.children}</span>
+}
+
+function Main(props) {
+    return (
+    <section className="section">
+      <Addressbar subject={subject}>
+      <Wallet />
+      </Addressbar>
+    </section>
+  );
+}
+
+function App() {
+  return (
+    <div>
+
+      <NavbarSolidLogin 
+        className="is-link" 
+        title="Wallet" 
+        sourceCode="https://github.com/play-grounds/react/blob/gh-pages/play/wallet.html"></NavbarSolidLogin>      
+      
+      <Main>
+      </Main>
+
+    </div>
+  );
+}
+
+ReactDOM.render(
+  <App />,
+  document.getElementById('root')
+);
+
+  </script>
+
+  <link rel="stylesheet" href="css/bulma.css" defer>
+
+</body>
+
+</html>

@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Speech App</title>
+  <script src="js/react.development.js"></script>
+  <script src="js/react-dom.development.js"></script>
+  <script src="js/rdflib.min.js"></script>
+  <script src="js/solid-auth-client.bundle.js"></script>
+
+  <script type="text/babel" src="../src/components/bulma/Navbar.jsx"></script>
+
+  <script src="./js/cogo-toast.js"></script>
+
+  <!-- Don't use this in production: -->
+  <script src="js/babel.min.js"></script>
+
+  <style>
+    *,
+    *:before,
+    *:after {
+      -moz-box-sizing: border-box;
+      -webkit-box-sizing: border-box;
+      box-sizing: border-box;
+    }
+
+    html {
+      font-family: Helvetica, Arial, sans-serif;
+      font-size: 100%;
+      background: #333;
+    }
+
+    #page-wrapper {
+      width: 640px;
+      background: #FFFFFF;
+      padding: 1em;
+      margin: 1em auto;
+      border-top: 5px solid #69c773;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+    }
+
+    h1 {
+      margin-top: 0;
+    }
+
+    #msg {
+      font-size: 0.9em;
+      line-height: 1.4em;
+    }
+
+    #msg.not-supported strong {
+      color: #CC0000;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 0.5em;
+      font-size: 1.2em;
+      border-radius: 3px;
+      border: 1px solid #D9D9D9;
+      box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1) inset;
+    }
+
+    input[type="range"] {
+      width: 300px;
+    }
+
+    label {
+      display: inline-block;
+      float: left;
+      width: 150px;
+    }
+
+    .option {
+      margin: 1em 0;
+    }
+
+    button {
+      display: inline-block;
+      border-radius: 3px;
+      border: none;
+      font-size: 0.9rem;
+      padding: 0.5rem 0.8em;
+      background: #69c773;
+      border-bottom: 1px solid #498b50;
+      color: white;
+      -webkit-font-smoothing: antialiased;
+      font-weight: bold;
+      margin: 0;
+      width: 100%;
+      text-align: center;
+    }
+
+    button:hover,
+    button:focus {
+      opacity: 0.75;
+      cursor: pointer;
+    }
+
+    button:active {
+      opacity: 1;
+      box-shadow: 0 -3px 10px rgba(0, 0, 0, 0.1) inset;
+    }
+  </style>
+
+
+</head>
+
+<body id="body">
+  <div id="root"></div>
+
+  <script type="text/babel">
+
+var UI = {}
+UI.store = $rdf.graph()
+UI.fetcher = new $rdf.Fetcher(UI.store)
+UI.updater = new $rdf.UpdateManager(UI.store)
+
+class App extends React.Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      message: '',
+      magnet: new URLSearchParams(document.location.search).get('magnet') || ''
+    }
+
+  }
+
+  componentDidMount(props) {
+    cogoToast.success('App Loaded', { position : 'top-right', hideAfter : 1 })
+  }
+
+
+  render() {
+
+
+      return (
+    <div>
+      <NavbarSolidLogin
+        className="is-link" 
+        title="Instant" 
+        sourceCode="https://github.com/play-grounds/react/blob/gh-pages/play/instant.html"/>
+
+
+    </div>
+    )
+  }
+}
+
+ReactDOM.render(
+  <App />,
+  document.getElementById('root')
+)
+
+
+
+
+</script>
+
+
+
+  <div id="page-wrapper">
+    <h1>Web Speech Synthesis Demo</h1>
+
+    <p id="msg"></p>
+
+    <input type="text" onChange="handleMessage()" name="speech-msg" id="speech-msg" x-webkit-speech>
+
+    <div class="option">
+      <label for="voice">Voice</label>
+      <select name="voice" id="voice"></select>
+    </div>
+    <div class="option">
+      <label for="volume">Volume</label>
+      <input type="range" min="0" max="1" step="0.1" name="volume" id="volume" value="1">
+    </div>
+    <div class="option">
+      <label for="rate">Rate</label>
+      <input type="range" min="0.1" max="10" step="0.1" name="rate" id="rate" value="1">
+    </div>
+    <div class="option">
+      <label for="pitch">Pitch</label>
+      <input type="range" min="0" max="2" step="0.1" name="pitch" id="pitch" value="1">
+    </div>
+
+    <button id="speak">Speak</button>
+
+  </div>
+
+  <link rel="stylesheet" href="css/bulma.css" defer>
+
+
+  <script>
+
+    function handleMessage() {
+      var speechMsgInput = document.getElementById('speech-msg');
+      var msg = speechMsgInput.value
+      console.log('msg', msg);
+
+      let href = window.location.href.split('?')[0]
+      href += '?message=' + encodeURIComponent(msg)
+      history.pushState({}, 'App', href)
+    }
+
+    /*
+     * Check for browser support
+     */
+    var supportMsg = document.getElementById('msg');
+
+    if ('speechSynthesis' in window) {
+      supportMsg.innerHTML = 'Your browser <strong>supports</strong> speech synthesis.';
+    } else {
+      supportMsg.innerHTML = 'Sorry your browser <strong>does not support</strong> speech synthesis.<br>Try this in <a href="https://www.google.co.uk/intl/en/chrome/browser/canary.html">Chrome Canary</a>.';
+      supportMsg.classList.add('not-supported');
+    }
+
+
+    // Get the 'speak' button
+    var button = document.getElementById('speak');
+
+    // Get the text input element.
+    var speechMsgInput = document.getElementById('speech-msg');
+    var qsMsg = new URLSearchParams(document.location.search).get('message')
+    if (qsMsg) {
+      speechMsgInput.value = qsMsg
+    }
+
+    // Get the voice select element.
+    var voiceSelect = document.getElementById('voice');
+
+    // Get the attribute controls.
+    var volumeInput = document.getElementById('volume');
+    var rateInput = document.getElementById('rate');
+    var pitchInput = document.getElementById('pitch');
+
+
+    // Fetch the list of voices and populate the voice options.
+    function loadVoices() {
+      // Fetch the available voices.
+      var voices = speechSynthesis.getVoices();
+
+      // Loop through each of the voices.
+      voices.forEach(function (voice, i) {
+        // Create a new option element.
+        var option = document.createElement('option');
+
+        // Set the options value and text.
+        option.value = voice.name;
+        option.innerHTML = voice.name;
+        if (voice.name === 'english_rp') {
+          option.selected = true
+        }
+
+        // Add the option to the voice selector.
+        voiceSelect.appendChild(option);
+      });
+    }
+
+    // Execute loadVoices.
+    loadVoices();
+
+    // Chrome loads voices asynchronously.
+    window.speechSynthesis.onvoiceschanged = function (e) {
+      loadVoices();
+    };
+
+
+    // Create a new utterance for the specified text and add it to
+    // the queue.
+    function speak(text) {
+      // Create a new instance of SpeechSynthesisUtterance.
+      var msg = new SpeechSynthesisUtterance();
+
+      // Set the text.
+      msg.text = text;
+
+      // Set the attributes.
+      msg.volume = parseFloat(volumeInput.value);
+      msg.rate = parseFloat(rateInput.value);
+      msg.pitch = parseFloat(pitchInput.value);
+
+      // If a voice has been selected, find the voice and set the
+      // utterance instance's voice attribute.
+      if (voiceSelect.value) {
+        msg.voice = speechSynthesis.getVoices().filter(function (voice) { return voice.name == voiceSelect.value; })[0];
+      }
+
+      // Queue this utterance.
+      window.speechSynthesis.speak(msg);
+    }
+
+
+    // Set up an event listener for when the 'speak' button is clicked.
+    button.addEventListener('click', function (e) {
+      if (speechMsgInput.value.length > 0) {
+        speak(speechMsgInput.value);
+      }
+    });
+
+
+  </script>
+
+
+</body>
+
+</html>

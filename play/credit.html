@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Credit App</title>
+  <script src="js/react.development.js"></script>
+  <script src="js/react-dom.development.js"></script>
+  <script src="js/solid-auth-client.bundle.js"></script>
+
+  <!-- Don't use this in production: -->
+  <script src="js/babel.min.js"></script>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="text/babel" src="../src/components/bulma/Navbar.jsx"></script>
+  <script type="text/babel" src="../src/components/Literal.js"></script>
+  <script type="text/babel" src="../src/components/Addressbar.jsx"></script>
+  <script src="js/rdflib.min.js"></script>
+
+  <script type="text/babel">
+const defaultUri = 'https://melvin.solid.live/public/appdata/wallet/credits/creditChain.ttl#1'
+const store = $rdf.graph()
+const fetcher = new $rdf.Fetcher(store)
+const updater = new $rdf.UpdateManager(store)
+
+var subject = getQueryStringParam('uri') || defaultUri
+
+function getQueryStringParam (param) {
+  var url = window.location.toString()
+  url.match(/\?(.+)$/)
+  var params = RegExp.$1
+  params = params.split('&')
+  var queryStringList = {}
+  for (var i = 0; i < params.length; i++) {
+    var tmp = params[i].split('=')
+    queryStringList[tmp[0]] = unescape(tmp[1])
+  }
+  return queryStringList[param]
+}
+
+class Credit extends React.Component  {
+  constructor(props) {
+    super(props)
+  }
+
+  componentDidMount() {
+    console.log('loading', subject)
+    fetcher.load(store.sym(subject)).then(response => {
+        this.triples = store.statementsMatching(store.sym(subject))
+        console.log('triples', this.triples)
+
+        for (var i=0; i < this.triples.length; i++) {
+            var triple = this.triples[i]
+            console.log('object', triple.object);
+        }
+        this.setState({triples: this.triples})
+    }, err => {
+        console.log(err);
+    });
+ }
+
+
+  render () {
+    var description = store.any(store.sym(subject), store.sym('https://w3id.org/cc#description'))
+
+    if (description && description.value) {
+      description = description.value
+    }
+    console.log('description', description)
+
+    var source = store.any(store.sym(subject), store.sym('https://w3id.org/cc#source'))
+
+    if (source && source.value) {
+      source = source.value
+    }
+    console.log('source', source)
+
+    var destination = store.any(store.sym(subject), store.sym('https://w3id.org/cc#destination'))
+
+    if (destination && destination.value) {
+      destination = destination.value
+    }
+    console.log('destination', destination)
+
+    var wallet = store.any(store.sym(subject), store.sym('https://w3id.org/cc#wallet'))
+
+    if (wallet && wallet.value) {
+      wallet = wallet.value
+    }
+    console.log('wallet', wallet)
+
+    var currency = store.any(store.sym(subject), store.sym('https://w3id.org/cc#currency'))
+
+    if (currency && currency.value) {
+      currency = currency.value
+    }
+    console.log('currency', currency)
+
+    var amount = store.any(store.sym(subject), store.sym('https://w3id.org/cc#amount'))
+
+    if (amount && amount.value) {
+      amount = amount.value
+    }
+    console.log('amount', amount)
+
+
+    return (<div>
+      <Label>Credit</Label> <a href={subject}>{subject}</a>
+      <br/>
+      <Label>Description</Label> {description}
+      <br/>
+      <Label>Source</Label> <a href={source}>{source}</a>
+      <br/>
+      <Label>Destination</Label> <a href={destination}>{destination}</a>
+      <br/>
+      <Label>Wallet</Label> <a href={wallet}>{wallet}</a>
+      <br/>
+      <Label>Currency</Label> <a href={currency}>{currency}</a>
+      <br/>
+      <Label>Amount</Label> {amount}
+      </div>)
+  }
+}
+
+function Label(props) {
+  return <span style={{width: '100px', display: 'inline-block'}}>{props.children}</span>
+}
+
+function Main(props) {
+    return (
+    <section className="section">
+      <Addressbar subject={subject}>
+      <Credit />
+      </Addressbar>
+    </section>
+  );
+}
+
+function App() {
+  return (
+    <div>
+
+      <NavbarSolidLogin
+        className="is-link" 
+        title="Credit" 
+        sourceCode="https://github.com/play-grounds/react/blob/gh-pages/play/credit.html" />
+      
+      <Main>
+      </Main>
+
+    </div>
+  );
+}
+
+ReactDOM.render(
+  <App />,
+  document.getElementById('root')
+);
+
+  </script>
+
+  <link rel="stylesheet" href="css/bulma.css" defer>
+
+</body>
+
+</html>

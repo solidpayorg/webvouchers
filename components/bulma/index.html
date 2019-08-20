@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>play</title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://solid.github.io/releases/rdflib.js/rdflib-0.12.2.min.js"></script>
+
+
+    <!-- Don't use this in production: -->
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+</head>
+
+<body>
+    <div id="root"></div>
+    <script type="text/babel" src="./menu.jsx"></script>
+
+
+    <script type="text/babel">
+
+
+function getQueryStringParam(param) {
+      var url = window.location.toString();
+      url.match(/\?(.+)$/);
+      var params = RegExp.$1;
+      params = params.split("&");
+      var queryStringList = {};
+      for (var i = 0; i < params.length; i++) {
+        var tmp = params[i].split("=");
+        queryStringList[tmp[0]] = unescape(tmp[1]);
+      }
+      return queryStringList[param];
+    }
+
+
+</script>
+
+
+
+    <script type="text/babel">
+
+
+function Body(props) {
+    return (
+    <div>
+
+      <h1 id="welcome" className="title">
+        Play apps!
+      </h1>
+
+
+    </div>
+  );
+}
+
+function Li (props) {
+  return <li><a target="_blank" href={props.href}>{props.text}</a></li>
+}
+
+
+function App() {
+  return (
+    <div>
+      <Menu className="is-link" title="Play index"/>
+      <section className="section">
+        <Body/>
+        <hr/>
+      <ul>
+        <Li href="bookmark.html" text="Bookmarks" />
+        <Li href="menu.html" text="Menu" />
+      </ul>
+      <hr/>
+      </section>
+
+    </div>
+  );
+}
+
+ReactDOM.render(
+  <App />,
+  document.getElementById('root')
+);
+
+    </script>
+
+    <script>
+
+    </script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css" defer>
+
+</body>
+
+</html>

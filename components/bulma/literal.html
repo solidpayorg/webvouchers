@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Literal Component</title>
+    <script type="module" src="../../node_modules/react/index.js"></script>
+    <script type="module" src="../../node_modules/react-dom/index.js"></script>
+
+<body>
+    <div id="root"></div>
+    <script type="module" src="./literal.jsx"> </script>
+
+    <script type="module">
+  import React from 'react'
+  import ReactDOM from 'react-dom'
+  import Literal from "./literal.jsx"
+
+
+  function App() {
+  return React.createElement("div", null, React.createElement(Literal, {
+    value: "Literal"
+  }));
+}
+
+ReactDOM.render(React.createElement(App, null), document.getElementById('root'));
+    </script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css" defer>
+
+</body>
+
+</html>

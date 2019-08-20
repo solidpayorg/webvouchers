@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>WebCredits App</title>
+    <script src="js/react.development.js"></script>
+    <script src="js/react-dom.development.js"></script>
+    <script src="js/rdflib.min.js"></script>
+
+    <!-- Don't use this in production: -->
+    <script src="js/babel.min.js"></script>
+</head>
+
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+
+      function hamburgerHelper() {
+          document.querySelector(".navbar-burger").addEventListener("click", toggleNav);
+      
+          function toggleNav() {
+              var nav = document.querySelector(".navbar-menu");
+              if (nav.className == "navbar-menu") {
+                  nav.className = "navbar-menu is-active";
+              } else {
+                  nav.className = "navbar-menu";
+              }
+          }
+      }
+      
+      function MenuAbout(props) {
+          return <div className="navbar-item has-dropdown is-hoverable">
+              <a className="navbar-link">
+                  About
+              </a>
+      
+              <div className="navbar-dropdown">
+      
+                  <a className="navbar-item">
+                      Source
+                </a>
+      
+                  <hr />
+      
+                  <a target="_blank" href="">
+                      Help
+                </a>
+      
+              </div>
+          </div>
+      }
+      
+      class Menu extends React.Component {
+          constructor(props) {
+              super(props)
+              this.title = props.title || 'Welcome'
+              this.className = props.className || 'is-link'
+      
+              // init
+              this.className = 'navbar ' + this.className
+          }
+      
+          componentDidMount() {
+              hamburgerHelper()
+          }
+      
+      
+          render() {
+              return <nav className={this.className} role="navigation" aria-label="main navigation">
+                  <div className="navbar-brand">
+      
+                      <a id="add" className="navbar-item" href="#">
+                          {this.title}
+                      </a>
+      
+                      <a role="button" className="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+                          <span aria-hidden="true"></span>
+                          <span aria-hidden="true"></span>
+                          <span aria-hidden="true"></span>
+                      </a>
+                  </div>
+      
+                  <div id="navbarBasicExample" className="navbar-menu">
+                      <div className="navbar-start">
+                          <MenuAbout />
+                      </div>
+      
+                      <div className="navbar-end">
+                      </div>
+                  </div>
+              </nav>
+      
+          }
+      }
+      
+      </script>
+
+
+    <script type="text/babel">
+
+
+function getQueryStringParam(param) {
+      var url = window.location.toString();
+      url.match(/\?(.+)$/);
+      var params = RegExp.$1;
+      params = params.split("&");
+      var queryStringList = {};
+      for (var i = 0; i < params.length; i++) {
+        var tmp = params[i].split("=");
+        queryStringList[tmp[0]] = unescape(tmp[1]);
+      }
+      return queryStringList[param];
+    }
+
+
+function NamedNode(props) {
+  var nodes = props.nodes;
+  if (nodes) {
+    var listItems = nodes.map((node) => {
+        if (node.object.termType == "Literal") {
+          return <li>{node.object.value}</li>
+        } else {
+          return <li><a href={node.object.value} target="_blank">{node.object.value}</a></li>
+        }
+    })
+    return (
+      <ul>{listItems}</ul>
+    );
+  } else {
+    return <div>Empty</div>
+  }
+}
+
+class Subject extends React.Component {
+    constructor(props) {
+        super(props)
+
+        var triples = [0, 1, 2]
+        var defaultUri = "https://melvincarvalho.com/#me"
+        var uri = getQueryStringParam("uri") || defaultUri
+        this.state = { uri : uri, triples : this.triples }
+        this.handleChange = this.handleChange.bind(this)
+
+    }
+
+    componentDidMount() {
+
+        fetcher.load(this.state.uri).then(response => {
+            this.triples = store.statementsMatching(store.sym(this.state.uri), store.sym("https://w3id.org/cc#wallet"), null, store.sym(this.state.uri.split('#')[0]))
+            for (var i=0; i < this.triples.length; i++) {
+                var triple = this.triples[i]
+                console.log('object', triple.object);
+            }
+            this.setState({triples: this.triples})
+        }, err => {
+            console.log(err);
+        });
+    }
+
+    handleChange(e) {
+      this.setState({uri: e.target.value })
+      console.log("this.state.uri", this.state.uri)
+      fetcher.load(this.state.uri).then(response => {
+            this.triples = store.statementsMatching(store.sym(this.state.uri), null, null, store.sym(this.state.uri.split('#')[0]))
+            for (var i=0; i < this.triples.length; i++) {
+                var triple = this.triples[i]
+                console.log('object', triple.object.value);
+            }
+            this.setState({triples: this.triples})
+        }, err => {
+            console.log(err);
+        });
+
+    }
+
+
+    render() {
+        return <NamedNode nodes={this.state.triples} />
+    }
+} 
+
+
+class InputUri extends React.Component {
+    constructor(props) {
+        super(props)
+
+        var defaultUri = "https://melvincarvalho.com/#me"
+        var uri = getQueryStringParam("uri") || defaultUri
+        this.state = { uri : uri }
+        this.handleChange = this.handleChange.bind(this)
+    }
+
+    handleChange(e) {
+      this.setState({uri: e.target.value })
+      console.log("this.state.uri", this.state.uri)
+    }
+
+    render() {
+
+        return <div>
+        Uri : <input size="80" onChange={this.handleChange} placeholder="uri" value={this.state.uri}/>
+        <hr/>
+
+        <Subject uri={this.state.uri}/>
+        </div>
+    }
+
+}
+
+</script>
+
+
+
+    <script type="text/babel">
+
+
+function Body(props) {
+    return (
+    <div>
+
+      <section className="section">
+      <h1 id="welcome" className="title">
+        Web Credits!
+      </h1>
+        <InputUri />
+      </section>
+
+    </div>
+  );
+}
+
+
+function App() {
+  return (
+    <div>
+      <Menu className="is-link" title="WebCredits App"/>
+      <Body/>
+
+    </div>
+  );
+}
+
+ReactDOM.render(
+  <App />,
+  document.getElementById('root')
+);
+
+    </script>
+
+    <script>
+
+        function getQueryStringParam(param) {
+            var url = window.location.toString();
+            url.match(/\?(.+)$/);
+            var params = RegExp.$1;
+            params = params.split("&");
+            var queryStringList = {};
+            for (var i = 0; i < params.length; i++) {
+                var tmp = params[i].split("=");
+                queryStringList[tmp[0]] = unescape(tmp[1]);
+            }
+            return queryStringList[param];
+        }
+
+        // main
+        const store = $rdf.graph()
+        const fetcher = new $rdf.Fetcher(store)
+        const updater = new $rdf.UpdateManager(store)
+
+
+    </script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css" defer>
+
+</body>
+
+</html>

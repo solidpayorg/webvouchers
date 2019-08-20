@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Patch App</title>
+  <script src="js/react.development.js"></script>
+  <script src="js/react-dom.development.js"></script>
+  <script src="js/rdflib.min.js"></script>
+  <script src="js/solid-auth-client.bundle.js"></script>
+
+
+  <!-- Don't use this in production: -->
+  <script src="js/babel.min.js"></script>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="text/babel" src="../src/components/bulma/Navbar.jsx"></script>
+  <script src="js/solid-auth-client.bundle.js"></script>
+
+  <script type="text/babel">
+
+var UI = {}
+UI.store = $rdf.graph()
+UI.fetcher = new $rdf.Fetcher(UI.store)
+UI.updater = new $rdf.UpdateManager(UI.store)
+
+class App extends React.Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      message: '',
+      body: new URLSearchParams(document.location.search).get('body') || 'INSERT DATA { } ',
+      uri: new URLSearchParams(document.location.search).get('uri') || 'none'
+    }
+    this.changeBody = this.changeBody.bind(this)
+    this.changeUri = this.changeUri.bind(this)
+    this.send = this.send.bind(this)
+
+    solid.auth.trackSession(session => {
+      if (!session) {
+        this.setState({ message : 'The user is not logged in' })
+      } else {
+        if (session.webId) {
+          this.setState({ message : `The user is ${session.webId}` })
+          this.getProfile(session.webId)
+        }
+      }
+    })
+  }
+
+  getProfile(profile) {
+    console.log('fetching', profile)
+    UI.fetcher.load(profile, {force : true} ).then(response => {
+      let s = UI.store.sym(profile)
+      let p = UI.store.sym('http://www.w3.org/ns/solid/terms#publicTypeIndex')
+      let o = null
+      let w = UI.store.sym(profile.split('#')[0])
+      let uri = UI.store.any(s, p, o, w)
+      this.setState({'uri' : uri.value})
+    })
+  }
+
+  send() {
+    console.log('sending', this.state)
+    solid.auth.fetch(this.state.uri,  
+      { 'headers' : 
+        { 'content-type' : 'application/sparql-update', 
+          }, 
+        'body' : this.state.body, 
+        'method' : 'PATCH' }   )
+  }
+
+
+  changeBody(event) {
+    this.setState({ 'body': event.target.value })
+  }
+
+  changeUri(event) {
+    this.setState({ 'uri': event.target.value })
+  }
+
+  async popupLogin(event) {
+    login('https://solid.community/common/popup.html')    
+  }
+
+  render() {
+
+    let href =  window.location.href.split('?')[0] 
+    href += '?uri=' + encodeURIComponent(this.state.uri)
+    href += '&body=' + encodeURIComponent(this.state.body)
+    history.pushState({}, 'App', href)
+
+
+      return (
+    <div>
+      <NavbarSolidLogin
+        className="is-link" 
+        title="Patch" 
+        sourceCode="https://github.com/play-grounds/react/blob/gh-pages/play/patch.html"/>
+      <section className="section">
+        <h2>Patch</h2>
+        <hr/>
+        {this.state.message}
+        <hr/>
+        URI : <input size="60" onChange={this.changeUri} value={this.state.uri} />
+        <a href={this.state.uri} target="_blank"> <img height="10" width="10" src="./image/External.svg" /></a> <hr/>
+        Payload : 
+        <br/>
+        <br/>
+        <textarea value={this.state.body} onChange={this.changeBody}>
+        </textarea>
+        <hr/>
+        Command : <br/>
+        fetch("{this.state.uri}",  { " { 'headers' : { 'content-type' : 'application/sparql-update'  }, 'body' : '" + this.state.body + "', 'method' : 'PATCH' } " } )
+        <hr/>
+        <div className="buttons">
+        <button className="button is-success" onClick={this.send} target='_blank' href='https://solid.github.io/solid-idps/'>Patch!</button>
+        
+        </div>
+        <hr/>
+        </section>
+
+    </div>
+    )
+  }
+}
+
+ReactDOM.render(
+  <App />,
+  document.getElementById('root')
+)
+  </script>
+
+  <link rel="stylesheet" href="css/bulma.css" defer>
+
+</body>
+
+</html>

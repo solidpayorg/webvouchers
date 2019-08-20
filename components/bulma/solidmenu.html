@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Hello World</title>
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+
+    <!-- Don't use this in production: -->
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+</head>
+
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+
+var isLoggedIn = true
+
+function GuestGreeting(props) {
+  return (<div><a id="register" href="https://solid.inrupt.com/get-a-solid-pod" target="_blank" className="button is-primary">
+              <strong>Sign up</strong>
+            </a>
+            <a id="login" className="button is-light">
+              Login
+            </a></div>);
+}
+
+function UserGreeting(props) {
+  return (<div><a id="logout" className="button is-light" >
+              Logout
+            </a></div>)
+}
+
+function Greeting(props) {
+  const isLoggedIn = props.isLoggedIn;
+  if (isLoggedIn) {
+    return <UserGreeting isLoggedIn={isLoggedIn} />;
+  }
+  return <GuestGreeting isLoggedIn={isLoggedIn} />;
+}
+
+function MenuGreeting(props) {
+    return <div className="navbar-item">
+<div className="buttons">
+  <Greeting isLoggedIn={isLoggedIn} />
+</div>
+</div>
+
+}
+
+function MenuAbout(props) {
+    return         <div className="navbar-item has-dropdown is-hoverable">
+          <a className="navbar-link">
+            About
+          </a>        
+
+          <div className="navbar-dropdown">
+
+            <a className="navbar-item">
+                About
+            </a>
+
+            <hr />
+
+            <a target="_blank" href="">
+              Help
+            </a>
+
+          </div>
+        </div>
+}
+
+function Menu(props) {
+    var title = props.title || 'Welcome'
+    var className = props.className || 'is-link'
+
+    // init
+    className = 'navbar ' + className
+
+  return <nav className={className} role="navigation" aria-label="main navigation">
+    <div className="navbar-brand">
+
+      <a id="add" className="navbar-item" href="#">
+        {title}
+      </a>
+
+      <a role="button" className="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
+    </div>
+
+    <div id="navbarBasicExample" className="navbar-menu">
+      <div className="navbar-start">
+        <MenuAbout/>
+      </div>
+
+      <div className="navbar-end">
+        <MenuGreeting/>
+      </div>
+    </div>
+  </nav>
+}
+
+
+function App() {
+  return (
+    <div>
+      <Menu className="is-link" title="Welcome App"/>
+    </div>
+  );
+}
+
+ReactDOM.render(
+  <App />,
+  document.getElementById('root')
+);
+
+    </script>
+    <script>
+    function hamburgerHelper() {
+      document.querySelector(".navbar-burger").addEventListener("click", toggleNav);
+
+      function toggleNav() {
+        var nav = document.querySelector(".navbar-menu");
+        if (nav.className == "navbar-menu") {
+          nav.className = "navbar-menu is-active";
+        } else {
+          nav.className = "navbar-menu";
+        }
+      }
+    }
+    // @TODO : move this into Menu class
+    setTimeout(hamburgerHelper, 1000)
+    </script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css" defer>
+
+</body>
+
+</html>

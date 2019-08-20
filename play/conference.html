@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Conference Calls</title>
+  <script src="js/react.development.js"></script>
+  <script src="js/react-dom.development.js"></script>
+  <script src="js/rdflib.min.js"></script>
+  <script src="js/solid-auth-client.bundle.js"></script>
+  <script src="https://melvincarvalho.github.io/groupuris/dist/groupuris.js"></script>
+  
+
+  <!-- Don't use this in production: -->
+  <script src="js/babel.min.js"></script>
+
+</head>
+
+<body>
+  <div id="root"></div>
+
+  
+  <div class="section">
+      <div>
+        <div">
+          <h4>Enter Two WebIDs</h4>
+  
+          <form method="">
+            <input id="webid1" type="input" name="sb" placeholder="First WebID">
+            <br>
+            <input id="webid2" type="input" name="sb" placeholder="Second WebID">
+            <br>
+            <br>
+            <a href="#" id="start" onClick="calcGroupUri()" class="btn btn-primary">Start Conference</a>
+          </form>
+  
+        </div>
+      </div>
+  
+    </div>  
+
+  <script type="text/babel" src="../src/components/bulma/Navbar.jsx"></script>
+
+  <script type="text/babel">
+
+function calcGroupUri() {
+  var groupuris = require('groupuris') 
+  console.log('clicked')
+  var webid1 = document.getElementById('webid1').value
+  var webid2 = document.getElementById('webid2').value
+  var agents = [webid1, webid2]
+  console.log(agents)
+
+  var turtle = groupuris.agentsToGroup(agents)
+  console.log(turtle)
+  var hash = groupuris.toSha256Base64url(turtle)
+  
+  var baseURI = 'https://meet.jit.si/'
+  var confURI = baseURI + hash
+  console.log(confURI)
+  setTimeout(function(){
+    window.location = confURI
+  }, 500)
+
+  return false
+}
+
+    function App() {
+      return (
+      <div>
+        <NavbarSolidLogin
+          className="is-link" 
+          title="Conference Calls" 
+          sourceCode="https://github.com/play-grounds/react/blob/gh-pages/play/conference.html"/>
+
+      </div>
+    );
+    }
+
+    ReactDOM.render(
+    <App />,
+    document.getElementById('root')
+    );
+
+    
+    </script>
+
+  <link rel="stylesheet" href="css/bulma.css" defer>
+  <link rel="stylesheet" href="css/common.css" defer>
+
+  <script>
+
+  </script>
+
+</body>
+
+</html>
