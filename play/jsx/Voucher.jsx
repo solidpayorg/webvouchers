@@ -117,7 +117,7 @@ class App extends React.Component {
           sourceCode='https://github.com/solidpayorg/webvouchers/blob/gh-pages/play/voucher.html'
         />
         <section className='section'>
-          Voucher Id :
+          Voucher Code :
           <br />
           <br />
           <input
