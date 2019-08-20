@@ -73,6 +73,43 @@
       voucher for spending. The proposed format is :
       <pre>urn:voucher:payload</pre>
 
+      <h4>Design Considerations</h4>
+
+      <p>There needs to be a public component, this is to allow the person owning/selling the voucher to know the
+        voucher still contains value. The private part is what is used to redeem and claim the voucher credit. The
+        private
+        part is typically a one way retrieval process, e.g. tearing open the packet, scratching off the silver or
+        hologram.</p>
+
+      <p>Secondly there needs to be checksums... people mistype stuff all the time. I'm finding using a single integer
+        number works best for computers to read (e.g. QR code, NFC) and allow this number to be entered as mneomonics
+        using Bitcoin's BIP39 so people can enter say 10 words to get that integer number to redeem the voucher.</p>
+
+      <p>Thirdly the issuer needs to be included in the URN. This is because you may have Starbucks, PayPal, CoinMode,
+        Google, etc... could be issuing these vouchers. Whoever is issuing the voucher needs to be named somehow.</p>
+
+      <p>Fourthly the currency needs to be described. This is either USD, BTC, GBP, starbuck points etc..</p>
+
+      <p></p>Finally the other key learning is there must be an optional expiry date option as many vouchers are handled
+      by
+      businesses who need to reclaim lost funds somehow and expirery solves this.</p>
+
+
+      There are other points to consider but these seem imperative.
+
+      i.e. the fields are
+
+      <pre>
+      voucher: to define it is some sort of voucher
+      url: where to query and get more info about the voucher.
+      public: very large integer value to verify amount voucher can be redeemed for.
+      private: the redeeming number
+      destination: platform specific could be a cryptoaddress or user handle
+    </pre>
+
+
+      This gives two urns. One to check a voucher and another to redeem it
+
       <h4>JSON key values</h4>
 
       The following are suggested JSON fields to tie to a voucher.
