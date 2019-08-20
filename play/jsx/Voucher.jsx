@@ -114,7 +114,7 @@ class App extends React.Component {
         <NavbarSolidLogin
           className='is-link'
           title='Web Voucher'
-          sourceCode='https://github.com/play-grounds/react/blob/gh-pages/play/voucher.html'
+          sourceCode='https://github.com/solidpayorg/webvouchers/blob/gh-pages/play/voucher.html'
         />
         <section className='section'>
           <h2>Web Vouchers</h2>
