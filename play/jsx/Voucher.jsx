@@ -42,6 +42,14 @@ class App extends React.Component {
     })
   }
 
+  toVoucher (voucher) {
+    if (voucher && voucher.match(/^urn:voucher:/)) {
+      return voucher
+    } else {
+      return 'urn:voucher' + voucher
+    }
+  }
+
   getProfile (profile) {
     console.log('fetching', profile)
     UI.fetcher.load(profile, { force: true }).then(response => {
@@ -59,7 +67,7 @@ class App extends React.Component {
     let body = 'request=' + this.state.request
     body += '&amount=' + this.state.amount
     body += '&destination=' + this.state.destination
-    body += '&voucher=' + this.state.voucher
+    body += '&voucher=' + this.toVoucher(this.state.voucher)
     solid.auth.fetch(this.state.uri, {
       body: body,
       mode: 'no-cors',
@@ -85,7 +93,8 @@ class App extends React.Component {
   }
 
   changeVoucher (event) {
-    this.setState({ voucher: event.target.value })
+    let voucher = event.target.value
+    this.setState({ voucher: voucher })
   }
 
   async popupLogin (event) {
@@ -116,25 +125,30 @@ class App extends React.Component {
           title='Web Vouchers'
           sourceCode='https://github.com/solidpayorg/webvouchers/blob/gh-pages/play/voucher.html'
         />
+
         <section className='section'>
-          Voucher Code :
+          <label for='voucher'>Voucher</label>
           <br />
           <br />
           <input
+            id='voucher'
             style={{ width: '95%' }}
             value={this.state.voucher}
             onChange={this.changeVoucher}
           />
           <hr />
-          Payment Request :
+
+          <label for='request'>Payment Request</label>
           <br />
           <br />
           <textarea
+            id='request'
             style={{ width: '95%' }}
             value={this.state.request}
             onChange={this.changeRequest}
           />
           <hr />
+
           <div className='buttons'>
             <button
               className='button is-success'
