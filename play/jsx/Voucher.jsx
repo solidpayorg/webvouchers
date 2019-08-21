@@ -68,12 +68,16 @@ class App extends React.Component {
     body += '&amount=' + this.state.amount
     body += '&destination=' + this.state.destination
     body += '&voucher=' + this.toVoucher(this.state.voucher)
-    solid.auth.fetch(this.state.uri, {
-      body: body,
-      mode: 'no-cors',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      method: 'POST'
-    })
+    solid.auth
+      .fetch(this.state.uri, {
+        body: body,
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        method: 'POST'
+      })
+      .then(function (response) {
+        console.log(response)
+      })
   }
 
   changeAmount (event) {
