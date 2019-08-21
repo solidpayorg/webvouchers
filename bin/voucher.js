@@ -9,6 +9,7 @@ const args = opts._
 
 const server = opts.server || 'https://localhost:5010'
 const cert = opts.cert
+const voucher = opts.voucher
 
 // get channel balance
 fetch(server)

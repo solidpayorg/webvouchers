@@ -84,7 +84,9 @@ app.get('/info', (req, res) => {
 
 // balance
 app.get('/balance', (req, res) => {
-  res.send(`<pre>user : ${user}\nbalance : ${balance}`)
+  const voucher = req.query.voucher
+  const balance = getBalance(voucher)
+  res.send(`<pre>voucher : ${voucher}\nbalance : ${balance}`)
 })
 
 // index
