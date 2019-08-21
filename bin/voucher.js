@@ -11,7 +11,9 @@ const server = opts.server || 'https://localhost:5010'
 const cert = opts.cert
 const voucher = opts.voucher
 
+var uri = server + (voucher ? '/balance?voucher=' + voucher : '/')
+
 // get channel balance
-fetch(server)
+fetch(uri)
   .then(res => res.text())
   .then(body => console.log(body))
