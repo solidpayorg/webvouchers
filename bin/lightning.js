@@ -36,7 +36,7 @@ function getBalance (user) {
 
 // get ledger
 var ledger = require('./ledger.json')
-var user = process.env.WEBID || 'https://melvincarvalho.com/#me'
+var user = process.env.WEBID
 var balance = getBalance(user)
 console.log('ledger', ledger)
 
@@ -223,7 +223,7 @@ app.post('/pay', (req, res) => {
 })
 
 app.get('/', function (req, res) {
-  res.send('hello worlds')
+  res.send('server is alive')
 })
 
 https.createServer(options, app).listen(port, function () {
