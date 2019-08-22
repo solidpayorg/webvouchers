@@ -86,7 +86,10 @@ app.get('/info', (req, res) => {
 app.get('/balance', (req, res) => {
   const voucher = req.query.voucher
   const balance = getBalance(voucher)
-  res.send(`<pre>voucher : ${voucher}\nbalance : ${balance}`)
+  let ret = {}
+  ret[voucher] = balance
+  res.setHeader('Content-Type', 'application/json')
+  res.end(JSON.stringify(ret))
 })
 
 // index

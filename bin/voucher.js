@@ -14,18 +14,18 @@ const args = opts._
 const cert = opts.cert
 const request = opts.request
 var voucher = args[0]
-var server = opts.server || 'https://localhost:5010'
-var method = opts.method || 'balance'
+var server = opts.server || 'https://melvincarvalho.com:5010'
 
+// init method
+var method = opts.method || 'balance'
 if (!voucher) {
   method = 'ping'
 }
-
 if (request) {
   method = 'pay'
 }
 
-// get method
+// init voucher
 if (voucher && !voucher.match(/:/)) {
   voucher = 'urn:voucher:' + voucher
 }
