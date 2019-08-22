@@ -11,39 +11,45 @@ const opts = minimist(process.argv.slice(2))
 const args = opts._
 
 // init
-const server = opts.server || 'https://localhost:5010'
 const cert = opts.cert
-const voucher = opts.voucher
 const request = opts.request
+var voucher = args[0]
+var server = opts.server || 'https://localhost:5010'
+var method = opts.method || 'balance'
 
-// get action
-var action = args[0] || 'ping'
-var uri = server
-// console.log('action', action)
+if (!voucher) {
+  method = 'ping'
+}
+
+// get method
+if (voucher && !voucher.match(/:/)) {
+  voucher = 'urn:voucher:' + voucher
+}
+// console.log('method', method)
 
 // ping
-if (action === 'ping') {
+if (method === 'ping') {
   // get channel balance
-  fetch(uri)
+  fetch(server)
     .then(res => res.text())
     .then(body => console.log(body))
     .catch(err => console.error(err))
 
   // balance
-} else if (action === 'balance') {
-  var uri = server + (voucher ? '/balance?voucher=' + voucher : '/')
+} else if (method === 'balance') {
+  server = server + (voucher ? '/balance?voucher=' + voucher : '/')
   // get channel balance
-  fetch(uri)
+  fetch(server)
     .then(res => res.text())
     .then(body => console.log(body))
     .catch(err => console.error(err))
 
   // pay
-} else if (action === 'pay') {
-  var uri = server + '/pay'
+} else if (method === 'pay') {
+  server = server + '/pay'
   // pay
   // console.log('pay')
-  fetch(uri, {
+  fetch(server, {
     method: 'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     body: 'voucher=' + voucher + '&request=' + request
