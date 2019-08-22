@@ -21,6 +21,10 @@ if (!voucher) {
   method = 'ping'
 }
 
+if (request) {
+  method = 'pay'
+}
+
 // get method
 if (voucher && !voucher.match(/:/)) {
   voucher = 'urn:voucher:' + voucher
