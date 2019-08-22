@@ -13,7 +13,7 @@ const voucher = opts.voucher
 const request = opts.request
 
 var action = args[0] || 'ping'
-console.log('action', action)
+// console.log('action', action)
 
 if (action === 'ping') {
   var uri = server
@@ -30,7 +30,7 @@ if (action === 'ping') {
 } else if (action === 'pay') {
   var uri = server + '/pay'
   // pay
-  console.log('pay')
+  // console.log('pay')
   fetch(uri, {
     method: 'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
