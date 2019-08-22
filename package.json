@@ -1,6 +1,6 @@
 {
   "name": "webvouchers",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "web vouchers",
   "main": "index.js",
   "scripts": {
@@ -11,8 +11,7 @@
     "type": "git",
     "url": "git+https://github.com/solidpayorg/webvouchers.git"
   },
-  "bin": { 'voucher',
-    "./bin/voucher.js"
+  "bin": { 'voucher': "./bin/voucher.js"
   },
   "keywords": [
     "react"
