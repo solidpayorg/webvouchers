@@ -12,7 +12,7 @@ const args = opts._
 
 // init
 const cert = opts.cert
-const request = opts.request
+const request = opts.request || args[1]
 var voucher = args[0]
 var server = opts.server || 'https://melvincarvalho.com:5010'
 
