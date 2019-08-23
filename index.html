@@ -3,12 +3,17 @@
 
 <head>
   <meta charset='utf-8'>
-  <title>Web Vouchers</title>
+  <title>Web Vouchers v0.1</title>
   <script src='https://www.w3.org/Tools/respec/respec-w3c-common' class='remove'></script>
   <script class='remove'>
     var respecConfig = {
       specStatus: "CG-DRAFT",
       editors: [{
+        name: "Melvin Carvalho",
+        url: "https://melvincarvalho.com/#me",
+        mailto: "melvincarvalho@gmail.com"
+      }],
+      authors: [{
         name: "Melvin Carvalho",
         url: "https://melvincarvalho.com/#me",
         mailto: "melvincarvalho@gmail.com"
@@ -27,17 +32,41 @@
     .turtle .hll {
       background-color: #ffffcc
     }
+
+    pre .highlight {
+      font-weight: bold;
+      color: green;
+    }
+
+    pre .comment {
+      color: SteelBlue;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
   </style>
 
 </head>
 
 <body>
   <section id='abstract'>
-    <i><b>A cabability URN for one time payments</b></i>.
+    <i><b>A cabability URN for one time payments on the Internet</b></i>.
     <p>
-      Web Vouchers is a way way to encode a voucher into a URI.
+      Web Vouchers is a way way to encode a voucher or voucher code into an URN.
+
+      <p>
+        Web Vouchers are a new type of identifier for one time payments on the web. These new identifiers are
+        designed to enable the recipient to prove access to the funds associated with that voucher with one more vendors
+        that accept that voucher. Web Vouchers are URNs of the form `urn:voucher:123456789abcdefghi`.
+      </p>
+      <p>
+        This document specifies a format, and operations that Web Vouchers may support.
+      </p>
+
     </p>
   </section>
+
   <section id='sotd'>
     <p>
       This document in an informal draft discussed in the <a href="https://www.w3.org/community/webpayments/">w3c web
