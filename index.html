@@ -96,12 +96,6 @@
 
       This spec is a work in process.
 
-      <h4>URN Format</h4>
-
-      The basic idea is to create a capability URN (like a capability URI but with an URN) and allow it to be used as a
-      voucher for spending. The proposed format is :
-      <pre>urn:voucher:payload</pre>
-
       <h4>Design Considerations</h4>
 
       <p>There needs to be a public component, this is to allow the person owning/selling the voucher to know the
@@ -163,40 +157,182 @@
     </section>
 
 
-    <section>
-      <h3>Mailing List</h3>
 
-      The web vouchers spec started on the <a
-        href="https://lists.w3.org/Archives/Public/public-webpayments/2019Aug/thread.html">W3C Payments Mailing
-        List</a>.
+    <section class="informative">
+      <h2>
+        Design Goals
+      </h2>
 
+      <p>
+        Decentralized Identifiers are a component of larger systems, such as
+        the Verifiable Credentials ecosystem [[?VC-DATA-MODEL]], which have driven
+        the design goals for this specification. This section summarizes the
+        primary design goals for this specification.
+      </p>
 
+      <table class="simple">
+        <thead>
+          <tr>
+            <th>
+              Goal
+            </th>
+            <th>
+              Description
+            </th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td>
+              Decentralization
+            </td>
+            <td>
+              Eliminate the requirement for
+              centralized authorities or single points of failure in
+              identifier management, including the registration of globally
+              unique identifiers, public verification keys, service
+              endpoints, and other metadata.
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              Control
+            </td>
+            <td>
+              Give entities, both human and
+              non-human, the power to directly control their digital
+              identifiers without the need to rely on external authorities.
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              Privacy
+            </td>
+            <td>
+              Enable entities to control the privacy
+              of their information, including minimal, selective, and
+              progressive disclosure of attributes or other data.
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              Security
+            </td>
+            <td>
+              Enable sufficient security for relying
+              parties to depend on DID Documents for their required level of
+              assurance.
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              Proof-based
+            </td>
+            <td>
+              Enable the <a>DID subject</a> to provide
+              cryptographic proof when interacting with other entities.
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              Discoverability
+            </td>
+            <td>
+              Make it possible for entities to
+              discover DIDs for other entities to learn more about or
+              interact with those entities.
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              Interoperability
+            </td>
+            <td>
+              Use interoperable standards so DID
+              infrastructure can make use of existing tools and software
+              libraries designed for interoperability.
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              Portability
+            </td>
+            <td>
+              Be system and network-independent and
+              enable entities to use their digital identifiers with any
+              system that supports DIDs and DID Methods.
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              Simplicity
+            </td>
+            <td>
+              Favor a reduced set of simple features in order to make the technology
+              easier to understand, implement, and deploy.
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              Extensibility
+            </td>
+            <td>
+              When possible, enable extensibility
+              provided it does not greatly hinder interoperability,
+              portability, or simplicity.
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </section>
 
-    <section>
-      <h3>Implementations</h3>
 
-      <h4>Client</h4>
+  </section>
 
-      The first client implementation uses vouchers to interact with the lightning network.<br /><br />
+  <section>
+    <h3>URN Format</h3>
 
-      <a href="https://webvouchers.org/play/voucher.html">Client Demo</a>
+    The basic idea is to create a capability URN (like a capability URI but with an URN) and allow it to be used as a
+    voucher for spending. The proposed format is :
 
-      <h4>Server</h4>
+    <pre class="example nohighlight" title="A simple example a Web Voucher">
+      urn:voucher:123456789abcdefghi
+          </pre>
 
-      <a href="https://github.com/solidpayorg/webvouchers/blob/gh-pages/bin/lightning.js">Server Code</a>
-
-    </section>
-
-    <section>
-      <h3>Acknowledgments</h3>
-
-      This spec is a team effort. Thanks to Michiel De Jong, Andrew Bansford Brown, Stuart Rashford and many others for
-      making this possible.
+  </section>
 
 
-    </section>
 
+  <section>
+    <h3>Implementations</h3>
+
+    <h4>Client</h4>
+
+    The first client implementation uses vouchers to interact with the lightning network.<br /><br />
+
+    <a href="https://webvouchers.org/play/voucher.html">Client Demo</a>
+
+    <h4>Server</h4>
+
+    <a href="https://github.com/solidpayorg/webvouchers/blob/gh-pages/bin/lightning.js">Server Code</a>
+
+  </section>
+
+  <section>
+    <h3>Acknowledgments</h3>
+
+    This spec is a team effort. Thanks to Michiel De Jong, Andrew Bansford Brown, Stuart Rashford and many others for
+    making this possible.
 
 
   </section>
