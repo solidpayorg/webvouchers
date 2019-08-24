@@ -3,12 +3,17 @@
 
 <head>
   <meta charset='utf-8'>
-  <title>Web Vouchers</title>
+  <title>Web Vouchers v0.1</title>
   <script src='https://www.w3.org/Tools/respec/respec-w3c-common' class='remove'></script>
   <script class='remove'>
     var respecConfig = {
       specStatus: "CG-DRAFT",
       editors: [{
+        name: "Melvin Carvalho",
+        url: "https://melvincarvalho.com/#me",
+        mailto: "melvincarvalho@gmail.com"
+      }],
+      authors: [{
         name: "Melvin Carvalho",
         url: "https://melvincarvalho.com/#me",
         mailto: "melvincarvalho@gmail.com"
@@ -27,17 +32,41 @@
     .turtle .hll {
       background-color: #ffffcc
     }
+
+    pre .highlight {
+      font-weight: bold;
+      color: green;
+    }
+
+    pre .comment {
+      color: SteelBlue;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
   </style>
 
 </head>
 
 <body>
   <section id='abstract'>
-    <i><b>A cabability URN for one time payments</b></i>.
+    <i><b>A cabability URN for one time payments on the Internet</b></i>.
     <p>
-      Web Vouchers is a way way to encode a voucher into a URI.
+      Web Vouchers are a way to encode a voucher or voucher code into an URN.
+
+      <p>
+        Web Vouchers are a new type of identifier for one time payments on the web. These new identifiers are
+        designed to enable the recipient to prove access to the funds associated with that voucher with one more vendors
+        that accept that voucher. Web Vouchers are URNs of the form `urn:voucher:123456789abcdefghi`.
+      </p>
+      <p>
+        This document specifies a format, and operations that Web Vouchers may support.
+      </p>
+
     </p>
   </section>
+
   <section id='sotd'>
     <p>
       This document in an informal draft discussed in the <a href="https://www.w3.org/community/webpayments/">w3c web
@@ -48,32 +77,160 @@
   <section>
     <h2>Introduction</h2>
 
+    <p>One time codes are a popular way of solving one off problems on the web. And example might be sending someone a
+      code
+      to log in to a system, or one to reset a password or one to creating a private address for a calendar. However
+      there
+      exists no generic URN on the web to encode such a one time code such that it can be used for redeeming a payment,
+      good or service.
+    </p>
+    <p>
+      This document specifies a format, and operations that Web Vouchers may support.
+    </p>
 
     <section>
-      <h3>Web Payments Community Group</h3>
+      <h3>Overview</h3>
+      This spec is a work in progress.
 
-      Webvouchers is one of several related specifications being discussed by the <a
-        href="https://www.w3.org/community/webpayments/">w3c web payments
-        community group</a>.
+      The web vouchers spec started, and is currently being discussed, on the following <a
+        href="https://lists.w3.org/Archives/Public/public-webpayments/2019Aug/thread.html">threads</a>.
+
+
+
+
+
+    </section>
+
+
+
+    <section class="informative">
+      <h2>
+        Design Goals
+      </h2>
+
+      <p>
+        Web Vouchers are a component of larger systems, such as
+        the Linked Data ecosystem [[LINKED-DATA]], which have driven
+        the design goals for this specification. This section summarizes the
+        primary design goals for this specification.
+      </p>
+
+      <table class="simple">
+        <thead>
+          <tr>
+            <th>
+              Goal
+            </th>
+            <th>
+              Description
+            </th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td>
+              Decentralization
+            </td>
+            <td>
+              The voucher should not be server specific, though it may be.
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              Control
+            </td>
+            <td>
+              Only the entities that know the voucher URN can use it.
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              Privacy
+            </td>
+            <td>
+              The Voucher URN is kept private between those that honor it.
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              Security
+            </td>
+            <td>
+              Transmission of a URN will be over encrypted formats.
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              Proof-based
+            </td>
+            <td>
+              Using PKI, hash, or other trap door function, it is possible to identify a URN without being able to spend
+              it.
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              Discoverability
+            </td>
+            <td>
+              It may be possible to discover more information about a URN in a proof based network, or using an
+              authoritative server.
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              Interoperability
+            </td>
+            <td>
+              URIs and URNs are used to provide wide interoperability with existing systems on the web.
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              Portability
+            </td>
+            <td>
+              Be system and network-independent and
+              enable entities to use their digital identifiers with any
+              system that supports Web Vouchers.
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              Simplicity
+            </td>
+            <td>
+              Favor a reduced set of simple features in order to make the technology
+              easier to understand, implement, and deploy.
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              Extensibility
+            </td>
+            <td>
+              When possible, enable extensibility
+              provided it does not greatly hinder interoperability,
+              portability, or simplicity.
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </section>
 
 
     <section>
-      <h3>Overview</h3>
-      <h4>Mailing List Thread</h4>
-
-      The web vouchers spec started on the following <a
-        href="https://lists.w3.org/Archives/Public/public-webpayments/2019Aug/thread.html">threads</a>.
-
-      This spec is a work in process.
-
-      <h4>URN Format</h4>
-
-      The basic idea is to create a capability URN (like a capability URI but with an URN) and allow it to be used as a
-      voucher for spending. The proposed format is :
-      <pre>urn:voucher:payload</pre>
-
-      <h4>Design Considerations</h4>
+      <h2>Design Considerations</h2>
 
       <p>There needs to be a public component, this is to allow the person owning/selling the voucher to know the
         voucher still contains value. The private part is what is used to redeem and claim the voucher credit. The
@@ -100,12 +257,12 @@
       i.e. the fields are
 
       <pre>
-      voucher: to define it is some sort of voucher
-      url: where to query and get more info about the voucher.
-      public: very large integer value to verify amount voucher can be redeemed for.
-      private: the redeeming number
-      destination: platform specific could be a cryptoaddress or user handle
-    </pre>
+    voucher: to define it is some sort of voucher
+    url: where to query and get more info about the voucher.
+    public: very large integer value to verify amount voucher can be redeemed for.
+    private: the redeeming number
+    destination: platform specific could be a cryptoaddress or user handle
+  </pre>
 
 
       This gives two urns. One to check a voucher and another to redeem it
@@ -115,59 +272,75 @@
       The following are suggested JSON fields to tie to a voucher.
 
       <pre>
-        {
-          issuer:"acme",
-          public: 12345678901234567890,
-          is_valid: true,
-          currency: "bitcoin",
-          amount:1000000
-          expires: 1238972934 (epoch time)
-          redeem_url : "https://www.acme.com/redeem"
-          remaining_uses : 1
-          redeemed : false
-          redeemed_by : "??"
-          redeemed_dates : [ 123987234, 124789238 ]
-        }</pre>
-
-
-
+      {
+        issuer:"acme",
+        public: 12345678901234567890,
+        is_valid: true,
+        currency: "bitcoin",
+        amount:1000000
+        expires: 1238972934 (epoch time)
+        redeem_url : "https://www.acme.com/redeem"
+        remaining_uses : 1
+        redeemed : false
+        redeemed_by : "??"
+        redeemed_dates : [ 123987234, 124789238 ]
+      }</pre>
     </section>
 
 
-    <section>
-      <h3>Mailing List</h3>
 
-      The web vouchers spec started on the <a
-        href="https://lists.w3.org/Archives/Public/public-webpayments/2019Aug/thread.html">W3C Payments Mailing
-        List</a>.
+  </section>
+
+  <section>
+    <h3>URN Format</h3>
+
+    The basic idea is to create a capability URN (like a capability URI but with an URN) and allow it to be used as a
+    voucher for spending. The proposed format is :
+
+    <pre class="example nohighlight" title="A simple example a Web Voucher">
+      urn:voucher:123456789abcdefghi
+          </pre>
+
+  </section>
+
+  <section>
+    <h3>Discovery</h3>
+
+    The D word. Thhre. I said it. There are two things that are useful to discover. Firstly, more information about a
+    voucher. The discovered document SHOULD return Linked Data. This can be done on a well known url, for example :
+
+    <pre class="example nohighlight" title="Well Known Discovery for a Web Voucher">
+      https://webvouchers.org/.well-known/voucher/123456789abcdefghi
+          </pre>
+
+    The other convenient thing that can be discovered is a server or servers that accept the voucher. This could be done
+    over a gossip network with an initial bootstrap. A discovery node accepts the URN and points to a document with
+    relevant servers.
+
+  </section>
 
 
-    </section>
+  <section>
+    <h3>Implementations</h3>
 
-    <section>
-      <h3>Implementations</h3>
+    <h4>Client</h4>
 
-      <h4>Client</h4>
+    The first client implementation uses vouchers to interact with the lightning network.<br /><br />
 
-      The first client implementation uses vouchers to interact with the lightning network.<br /><br />
+    <a href="https://webvouchers.org/play/voucher.html">Client Demo</a>
 
-      <a href="https://webvouchers.org/play/voucher.html">Client Demo</a>
+    <h4>Server</h4>
 
-      <h4>Server</h4>
+    <a href="https://github.com/solidpayorg/webvouchers/blob/gh-pages/bin/lightning.js">Server Code</a>
 
-      <a href="https://github.com/solidpayorg/webvouchers/blob/gh-pages/bin/lightning.js">Server Code</a>
+  </section>
 
-    </section>
+  <section>
+    <h3>Acknowledgments</h3>
 
-    <section>
-      <h3>Acknowledgments</h3>
-
-      This spec is a team effort. Thanks to Michiel De Jong, Andrew Bansford Brown, Stuart Rashford and many others for
-      making this possible.
-
-
-    </section>
-
+    This spec is a team effort. Thanks to Michiel De Jong, Andrew Bansford Brown, Stuart Rashford, Adrian Hope-Bailie
+    and many others for
+    making this possible.
 
 
   </section>
