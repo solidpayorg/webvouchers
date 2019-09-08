@@ -13,7 +13,7 @@ class App extends React.Component {
         new URLSearchParams(document.location.search).get('request') || '',
       uri:
         new URLSearchParams(document.location.search).get('uri') ||
-        'https://localhost:5010/',
+        'https://localhost:5012/',
       destination:
         new URLSearchParams(document.location.search).get('destination') || '',
       voucher:
