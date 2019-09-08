@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const webid = require('webid')('tls')
 const https = require('https')
 const fs = require('fs')
