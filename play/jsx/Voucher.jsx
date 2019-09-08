@@ -52,14 +52,20 @@ class App extends React.Component {
 
   getProfile (profile) {
     console.log('fetching', profile)
-    UI.fetcher.load(profile, { force: true }).then(response => {
-      let s = UI.store.sym(profile)
-      let p = UI.store.sym('http://www.w3.org/ns/solid/terms#publicTypeIndex')
-      let o = null
-      let w = UI.store.sym(profile.split('#')[0])
-      let uri = UI.store.any(s, p, o, w)
-      // this.setState({'uri' : uri.value})
-    })
+    UI.fetcher
+      .load(profile, { force: true })
+      .then(response => {
+        let s = UI.store.sym(profile)
+        let p = UI.store.sym('http://www.w3.org/ns/solid/terms#publicTypeIndex')
+        let o = null
+        let w = UI.store.sym(profile.split('#')[0])
+        let uri = UI.store.any(s, p, o, w)
+        // this.setState({'uri' : uri.value})
+        console.log('profile fetched')
+      })
+      .catch(err => {
+        console.log('error', err)
+      })
   }
 
   send () {
@@ -77,6 +83,11 @@ class App extends React.Component {
       })
       .then(function (response) {
         console.log(response)
+        cogoToast.success('success type : ' + response.type)
+      })
+      .catch(err => {
+        console.log('error', err)
+        cogoToast.error(err.toString())
       })
   }
 
