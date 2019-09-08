@@ -37,16 +37,40 @@ function getBalance (user) {
 }
 
 // get ledger
-var ledger = require('./ledger.json')
+var ledger
+var ledgerFile = __dirname + '/ledger.json'
+try {
+  ledger = require(ledgerFile)
+  console.log('ledger', ledger)
+} catch (error) {
+  console.error('no ledger at', ledgerFile, 'try:')
+  console.error('echo "{}" > ', ledgerFile)
+  process.exit(-1)
+}
+
+// set up user
 var user = process.env.WEBID
 var balance = getBalance(user)
-console.log('ledger', ledger)
 
-var options = {
-  key: fs.readFileSync(__dirname + '/privkey.pem'),
-  cert: fs.readFileSync(__dirname + '/fullchain.pem'),
-  requestCert: true,
-  rejectUnauthorized: false
+// get certs
+var options
+try {
+  options = {
+    key: fs.readFileSync(__dirname + '/privkey.pem'),
+    cert: fs.readFileSync(__dirname + '/fullchain.pem'),
+    requestCert: true,
+    rejectUnauthorized: false
+  }
+} catch (error) {
+  console.error('could not load certs try:')
+  console.error(
+    'openssl req -x509 -out ' +
+      __dirname +
+      '/fullchain.pem -keyout ' +
+      __dirname +
+      "/privkey.pem  -newkey rsa:2048 -nodes -sha256 -subj '/CN=localhost'"
+  )
+  process.exit(-1)
 }
 
 var app = express()
