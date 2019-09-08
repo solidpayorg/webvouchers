@@ -41,8 +41,8 @@ var balance = getBalance(user)
 console.log('ledger', ledger)
 
 var options = {
-  key: fs.readFileSync('privkey.pem'),
-  cert: fs.readFileSync('fullchain.pem'),
+  key: fs.readFileSync(__dirname + '/privkey.pem'),
+  cert: fs.readFileSync(__dirname + '/fullchain.pem'),
   requestCert: true,
   rejectUnauthorized: false
 }
