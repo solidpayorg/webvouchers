@@ -112,6 +112,7 @@ app.get('/info', (req, res) => {
 app.get('/balance', (req, res) => {
   const voucher = req.query.voucher
   const balance = getBalance(voucher)
+  console.log({ balance }, { voucher })
   let ret = {}
   ret[voucher] = balance
   res.setHeader('Content-Type', 'application/json')
