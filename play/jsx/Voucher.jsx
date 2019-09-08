@@ -46,7 +46,7 @@ class App extends React.Component {
     if (voucher && voucher.match(/^urn:voucher:/)) {
       return voucher
     } else {
-      return 'urn:voucher' + voucher
+      return 'urn:voucher:' + voucher
     }
   }
 
