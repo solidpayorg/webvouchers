@@ -10,15 +10,55 @@ function Body (props) {
 
 function Li (props) {
   return (
-    <div className='box'>
-      <a href={props.href}>{props.text}</a>
-    </div>
+    <span
+      style={{
+        display: 'flex',
+        height: '200px',
+        flexGrow: '1'
+      }}
+      className='box'
+    >
+      <div className='card'>
+        <div className='card-content'>
+          <div className='media'>
+            <div className='media-left'>
+              <div className='media-content'>
+                <p className='title is-5'>
+                  <a href={props.href}>{props.text}</a>
+                </p>
+                <hr />
+              </div>
+              <figure className='image is-48x48'>
+                <img
+                  src='https://bulma.io/images/placeholders/96x96.png'
+                  alt='Placeholder image'
+                />
+                <div
+                  style={{
+                    display: 'inline',
+                    verticalAlign: 'top',
+                    paddingLeft: '10px'
+                  }}
+                  className='content'
+                >
+                  {props.description || props.text}
+                </div>
+              </figure>
+            </div>
+          </div>
+        </div>
+      </div>
+    </span>
   )
 }
 
 function App () {
   let apps = [
-    { uri: 'bookmark.html', title: 'Bookmarks' },
+    {
+      uri: 'bookmark.html',
+      title: 'Bookmarks',
+      description: 'Bookmarking App'
+    },
     { uri: 'brain.html', title: 'Brain Wallet' },
     { uri: 'friends.html', title: 'Friends in RDF' },
     { uri: 'solid.html', title: 'Solid App' },
@@ -58,7 +98,7 @@ function App () {
   ]
 
   var appList = apps.map(app => {
-    return <Li href={app.uri} text={app.title} />
+    return <Li href={app.uri} text={app.title} description={app.description} />
   })
 
   return (
@@ -68,14 +108,16 @@ function App () {
         title='Play Apps'
         sourceCode='https://github.com/play-grounds/react/blob/gh-pages/play/index.html'
       />
-      <section className='section'>
+      <section style={{ maxWidth: '90%' }} className='section'>
         <Body />
         <hr />
         Play apps is a set of playground apps to test out various functionality.
         <br />
         Click on a link below to try out one of our apps.
         <hr />
-        {appList}
+        <div style={{ maxWidth: '90%', display: 'flex', flexWrap: 'wrap' }}>
+          {appList}{' '}
+        </div>
         <hr />
       </section>
     </div>
