@@ -1,6 +1,6 @@
 {
   "name": "webvouchers",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "web vouchers",
   "main": "index.js",
   "scripts": {
