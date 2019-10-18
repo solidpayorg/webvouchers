@@ -1,7 +1,5 @@
 #!/usr/bin/env node
 
-// parse command line
-
 // requires
 const minimist = require('minimist')
 const fetch = require('node-fetch')
@@ -14,7 +12,7 @@ const args = opts._
 const cert = opts.cert
 const request = opts.request || args[1]
 var voucher = args[0]
-var server = opts.server || process.env('SERVER') || 'https://localhost:5010'
+var server = opts.server || process.env['SERVER'] || 'https://localhost:5012'
 
 // init method
 var method = opts.method || 'balance'
