@@ -104,7 +104,11 @@ app.get('/channel', (req, res) => {
 // info
 app.get('/info', (req, res) => {
   lnService.getWalletInfo({ lnd }, (err, result) => {
-    res.send('<pre>public key is : \n' + result.public_key)
+    if (err) {
+      res.send(err)
+    } else {
+      res.send('<pre>public key is : \n' + result.public_key)
+    }
   })
 })
 
