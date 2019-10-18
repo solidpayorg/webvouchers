@@ -95,8 +95,13 @@ app.use(function (req, res, next) {
   next()
 })
 
+// channel info
 app.get('/channel', (req, res) => {
   lnService.getChannelBalance({ lnd }, (err, result) => {
+    if (err) {
+      res.send(err)
+      return
+    }
     res.send('<pre>channel balance is \n' + result.channel_balance)
   })
 })
@@ -106,9 +111,9 @@ app.get('/info', (req, res) => {
   lnService.getWalletInfo({ lnd }, (err, result) => {
     if (err) {
       res.send(err)
-    } else {
-      res.send('<pre>public key is : \n' + result.public_key)
+      return
     }
+    res.send('<pre>public key is : \n' + result.public_key)
   })
 })
 
