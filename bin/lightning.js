@@ -119,9 +119,9 @@ app.get('/info', (req, res) => {
 
 // balance
 app.get('/balance', (req, res) => {
-  const voucher = req.query.voucher
-  const balance = getBalance(voucher)
-  console.log({ balance }, { voucher }, { ledger })
+  const voucher = req.query.voucher || user
+  const balance = getBalance(voucher) || getBalance(user)
+  console.log({ balance }, { voucher }, { ledger }, { user })
   let ret = {}
   ret[voucher] = balance
   res.setHeader('Content-Type', 'application/json')
