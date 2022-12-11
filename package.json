@@ -42,7 +42,7 @@
     "babel-polyfill": "^6.26.0",
     "install": "^0.13.0",
     "ldflex": "^2.2.1",
-    "ln-service": "^40.1.3",
+    "ln-service": "^54.5.0",
     "node-fetch": "^3.1.1",
     "npm": "^6.10.0",
     "react": "^16.5.2",
