@@ -282,14 +282,22 @@
   <section>
     <h3>URN Format</h3>
 
-    Each namespace will have its own format and a link to the documentation.  Current namespaces are `txo` (transaction object), `cashu` cashu nuts, and `web` generic web vouchers
+    Each namespace will have its own format and a link to the documentation.  Current namespaces are `txo` (transaction object), `cashu` <a href="https://github.com/cashubtc/nuts/blob/main/00.md">cashu nuts</a>, and `web` generic web vouchers
     
     The basic idea is to create a capability URN (like a capability URI but with an URN) and allow it to be used as a
     voucher for spending. The proposed format is :
 
     <pre class="example nohighlight" title="A simple example a Web Voucher">
-      urn:voucher:123456789abcdefghi
-          </pre>
+      urn:voucher:cashu:cashuabcdrf09243432525
+    </pre>
+
+    <pre class="example nohighlight" title="A simple example a Web Voucher">
+      urn:voucher:txo:chain:123456789abcdef:vout?key=K
+    </pre>
+
+    <pre class="example nohighlight" title="A simple example a Web Voucher">
+      urn:voucher:web:123456789abcdefghi
+    </pre>
 
   </section>
 
