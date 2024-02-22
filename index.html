@@ -227,60 +227,6 @@
     </section>
 
 
-    <section>
-      <h2>Design Considerations</h2>
-
-      <p>There is often a public component, this is to allow the person owning/selling the voucher to know the
-        voucher still contains value. The private part is what is used to redeem and claim the voucher credit. The
-        private part is typically a one way retrieval process, e.g. tearing open the packet, scratching off the silver or
-        a hologram.</p>
-
-      <p>The the issuer, or mint, is often included in the URN. This is because you may have Starbucks, PayPal, CoinMode,
-        Google, etc... could be issuing these vouchers. Whoever is issuing the voucher needs to be named somehow.</p>
-
-      <p>Thirdley the currency needs to be described. This is either USD, BTC, GBP, starbuck points etc..</p>
-
-      <p></p>Finally there is an optional expiry date option as many vouchers are handled
-      by
-      businesses who need to reclaim lost funds somehow and expiry solves this.</p>
-
-
-      i.e. common fields could be
-
-      <pre>
-    voucher: to define it is some sort of voucher
-    url: where to query and get more info about the voucher.
-    public: very large integer value to verify amount voucher can be redeemed for.
-    private: the redeeming number
-    destination: platform specific could be a cryptoaddress or user handle
-  </pre>
-
-
-      This gives two urns. One to check a voucher and another to redeem it
-
-      <h4>JSON key values</h4>
-
-      The following are suggested JSON fields to tie to a voucher.
-
-      <pre>
-      {
-        issuer:"acme",
-        public: 12345678901234567890,
-        is_valid: true,
-        currency: "bitcoin",
-        amount:1000000
-        expires: 1238972934 (epoch time)
-        redeem_url : "https://www.acme.com/redeem"
-        remaining_uses : 1
-        redeemed : false
-        redeemed_by : "??"
-        redeemed_dates : [ 123987234, 124789238 ]
-      }</pre>
-    </section>
-
-
-
-  </section>
 
 <section>
   <h2>Understanding Namespaces in Web Vouchers</h2>
