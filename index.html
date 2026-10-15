@@ -280,6 +280,15 @@
       <pre class="example nohighlight" title="A simple example a Web Voucher">
         urn:voucher:txo:chain:123456789abcdef:vout?key=K&amount=1000000
       </pre>
+
+      The <code>chain</code> is the chain id of the <a href="https://bitcoin-kernel.com/utxo/"><code>txo:</code> scheme</a>, so a voucher's
+      coin is the <code>txo:</code> URI with the namespace prefix and the query dropped: <code>btc</code>, <code>tbtc4</code> (Bitcoin testnet4),
+      <code>xbt</code> and <code>txbt4</code> (Bitcoin BLAKE2b mainnet and testnet4). The <code>key</code> is the 64-hex private key of the
+      output's key, and <code>amount</code> is in satoshis.
+
+      <pre class="example nohighlight" title="A voucher for a coin on Bitcoin BLAKE2b testnet4">
+        urn:voucher:txo:txbt4:6eda21ff8f708013ba429824c36ffef7ca2270f693acb602a3319090e0fa132e:1?key=K&amp;amount=10000
+      </pre>
     </section>
 
     <section>
